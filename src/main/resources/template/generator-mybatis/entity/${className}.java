@@ -31,6 +31,9 @@ public class ${className} {
 	private $column.attrType $column.attrname;
 		#end
 		#if($column.columnName != $pk.columnName)
+	/**
+	 *$column.comments
+	 */
 	@Column(name="${column.columnName}")
 	private $column.attrType $column.attrname;
 		#end
