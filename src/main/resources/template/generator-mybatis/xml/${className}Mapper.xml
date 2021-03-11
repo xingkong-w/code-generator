@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jd.ept.walmart.biz.dao.mapper.${className}Mapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.jd.ept.walmart.domain.entity.${className}" id="${classname}Map">
+#foreach($column in $columns)
+        <result  column="${column.columnName}" property="${column.attrname}"/>
+#end
+    </resultMap>
+
+	<sql id="${className}Column">
+		#foreach($column in $columns)
+#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+			$column.columnName#if($velocityCount != $columns.size()), #end
+
+#end
+#end
+
+
+	</sql>
+
+	<select id="queryObject" resultType="com.jd.ept.walmart.domain.entity.${className}">
+		select <include refid="${className}Column" />  from ${tableName} where ${pk.columnName} = #{${pk.columnName}}
+	</select>
+
+	<select id="queryList" resultType="com.jd.ept.walmart.domain.entity.${className}" parameterType="Map">
+		select <include refid="${className}Column" /> from ${tableName}
+        <where>
+			1=1
+			#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName)
+			 <if test="$column.attrname != null">and $column.columnName = #{$column.attrname}#if($velocityCount != $columns.size()) #end</if>
+			#end
+			#end
+		</where>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int" parameterType="Map">
+		select count(*) from ${tableName}
+		<where>
+			1=1
+			#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName)
+			<if test="$column.attrname != null">and $column.columnName = #{$column.attrname}#if($velocityCount != $columns.size()) #end</if>
+			#end
+			#end
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.jd.ept.walmart.domain.entity.${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+		insert into ${tableName}
+		(
+		<include refid="${className}Column" />
+		)
+		values
+		(
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+			#{$column.attrname}#if($velocityCount != $columns.size()), #end
+
+#end			
+#end
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.jd.ept.walmart.domain.entity.${className}">
+		update ${tableName} 
+		<set>
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName)
+			<if test="$column.attrname != null">$column.columnName = #{$column.attrname}#if($velocityCount != $columns.size()), #end</if>
+#end
+#end
+		</set>
+		where ${pk.columnName} = #{${pk.attrname}}
+	</update>
+	
+
+
+</mapper>
