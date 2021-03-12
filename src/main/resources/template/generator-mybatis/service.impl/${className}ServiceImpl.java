@@ -45,7 +45,7 @@ public class ${className}ServiceImpl implements ${className}Service {
 
 	@Override
 	public void update(${className} ${classname}){
-		${classname}Dao.update(${classname});
+		${classname}Dao.updateEntry(${classname});
 	}
 
 
