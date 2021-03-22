@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Builder;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name="${tableName}")
 @Data
+@Builder
 public class ${className} {
 
 #foreach ($column in $columns)
