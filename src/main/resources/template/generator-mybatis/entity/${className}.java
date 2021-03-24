@@ -2,12 +2,13 @@ package com.jd.ept.walmart.domain.entity;
 
 import java.util.Date;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Builder;
+import lombok.AllArgsConstructor;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -25,6 +26,8 @@ import java.math.BigDecimal;
 @Table(name="${tableName}")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ${className} {
 
 #foreach ($column in $columns)
